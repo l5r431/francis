@@ -1,0 +1,144 @@
+/* contact.css — contact page only */
+.contact-grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+.contact h3 {
+  margin-top: 1.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.status-card {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--white);
+  padding: 1rem 1.2rem;
+  border-radius: var(--r);
+  margin-block: 1.2rem;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #999;
+  flex: none;
+}
+
+.dot.open {
+  background: #2E8B57;
+  box-shadow: 0 0 0 5px rgba(46, 139, 87, 0.25);
+}
+
+.dot.closed {
+  background: #B3261E;
+}
+
+.map {
+  margin-top: 1.6rem;
+  border-radius: var(--r);
+  width: 100%;
+  height: auto;
+}
+
+#visit-form {
+  background: var(--white);
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+  border-radius: var(--r);
+  align-self: start;
+}
+
+#visit-form h2 {
+  margin-bottom: 1.2rem;
+}
+
+/* --- longer page sections --- */
+.getting-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.getting-grid li {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 20px;
+  border-top: 6px solid var(--kelp);
+}
+
+.getting-grid h3 {
+  margin-bottom: 0.4rem;
+}
+
+.flow-list {
+  list-style: none;
+  padding: 0;
+  counter-reset: flow;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.flow-list li {
+  counter-increment: flow;
+  border-top: 4px solid var(--signal);
+  padding-top: 1rem;
+}
+
+.flow-list li::before {
+  content: "Step " counter(flow);
+  display: block;
+  font-weight: 600;
+  color: var(--kelp);
+  margin-bottom: 0.3rem;
+}
+
+.flow-list h3 {
+  margin-bottom: 0.4rem;
+}
+
+/* ===== hero: pale, centred, round entrance photo and a curved bottom edge ===== */
+.page-banner--visit {
+  padding-bottom: clamp(3rem, 6vw, 4.5rem);
+  border-radius: 0 0 50% 50% / 0 0 3rem 3rem;
+  background: var(--mist);
+  color: var(--ink);
+}
+
+.hero-centre {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.page-banner--visit .hero-photo {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border: 5px solid var(--white);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 4px var(--signal),
+    0 14px 28px rgba(var(--ink-rgb), 0.18);
+}
+
+.page-banner--visit h1 {
+  max-width: 14ch;
+  margin-top: 1.4rem;
+}
+
+.page-banner--visit p {
+  margin-inline: auto;
+  color: var(--slate);
+}
+
+.page-banner--visit .btn {
+  margin-top: 1.5rem;
+}

@@ -1,0 +1,347 @@
+/* about.css — about page only */
+.timeline {
+  list-style: none;
+  padding: 0;
+  border-left: 3px solid var(--ink);
+  display: grid;
+  gap: 0.4rem;
+}
+
+.timeline li {
+  padding-left: 1.4rem;
+  position: relative;
+}
+
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 0.9rem;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--signal);
+  border: 3px solid var(--ink);
+}
+
+.timeline button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  padding: 0.6rem 0;
+  cursor: pointer;
+  font-family: var(--display);
+  font-size: 1.3rem;
+}
+
+.timeline button span {
+  display: inline-block;
+  min-width: 4.2rem;
+  color: var(--kelp);
+}
+
+.timeline button[aria-expanded="true"] {
+  color: var(--kelp);
+}
+
+.timeline p {
+  padding-bottom: 0.8rem;
+}
+
+.tutor-box {
+  background: var(--white);
+  padding: 1.6rem;
+  border-radius: var(--r);
+  display: grid;
+  gap: 0.8rem;
+}
+
+#tutor-out {
+  min-height: 4.5rem;
+}
+
+.campus-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1.4rem;
+}
+
+.campus-list li {
+  border-left: 6px solid var(--signal);
+  padding-left: 1.2rem;
+}
+
+.campus-list p {
+  color: var(--ink-soft);
+}
+
+.service-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.service-grid li {
+  background: var(--mist);
+  padding: 1.5rem;
+  border-radius: var(--r);
+}
+
+.service-grid h3 {
+  margin-bottom: 0.4rem;
+}
+
+/* --- longer page sections --- */
+.approach-grid,
+.assess-grid-x {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.approach-grid li {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 20px;
+  border-top: 6px solid var(--kelp);
+}
+
+.approach-grid li:nth-child(even) {
+  border-color: var(--signal);
+}
+
+.approach-grid h3 {
+  margin-bottom: 0.4rem;
+}
+
+.spaces-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.spaces-grid li {
+  padding: 1.1rem 1.2rem;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  font-weight: 600;
+  text-align: center;
+}
+
+.safe-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.safe-list li {
+  background: var(--white);
+  padding: 1rem 1.2rem;
+  border-left: 6px solid var(--kelp);
+  border-radius: var(--r);
+}
+
+/* spaces grid with photos */
+.spaces-grid {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.2rem;
+}
+
+.spaces-grid li {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  text-align: left;
+  font-weight: 600;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.spaces-grid .photo {
+  margin: 0;
+}
+
+/* ===== news, events and newsletter (merged in from the old news page) ===== */
+.news-tools {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 620px;
+  margin-top: 1.4rem;
+}
+
+.news-grid {
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  margin-top: 1.5rem;
+}
+
+.news-grid article {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: var(--r);
+  border-top: 6px solid var(--ink);
+  display: grid;
+  gap: 0.4rem;
+  align-content: start;
+}
+
+.news-grid article[data-cat="sport"] {
+  border-color: var(--kelp);
+}
+
+.news-grid article[data-cat="arts"] {
+  border-color: var(--signal);
+}
+
+.news-grid article[data-cat="academic"] {
+  border-color: #2D5C8A;
+}
+
+.news-grid article[data-cat="social"] {
+  border-color: var(--signal);
+}
+
+.news-part {
+  margin-top: 2.5rem;
+}
+
+#news-empty {
+  margin-top: 1.4rem;
+  font-weight: 600;
+}
+
+.head-sign {
+  margin-top: 1rem;
+  font-family: var(--display);
+  font-size: 1.2rem;
+  color: var(--kelp);
+}
+
+.event-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.25rem;
+  max-width: 760px;
+}
+
+.event-list li {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 1.2rem;
+  align-items: center;
+  background: var(--white);
+  padding: 1.1rem 1.3rem;
+  border-radius: 20px;
+}
+
+.event-list time {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  color: var(--kelp);
+  line-height: 1.1;
+}
+
+.archive details:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.signup form {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.signup .btn {
+  justify-self: start;
+}
+
+/* ===== people: management, teachers, prefects, class leaders (merged in from the old people page) ===== */
+.sub-h {
+  margin-top: 1.75rem;
+  margin-bottom: 1.2rem;
+}
+
+/* how roles are chosen */
+.vote-steps {
+  list-style: none;
+  padding: 0;
+  counter-reset: vs;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-block: 1.25rem 1.75rem;
+}
+
+.vote-steps li {
+  counter-increment: vs;
+  border-top: 4px solid var(--kelp);
+  padding-top: 1rem;
+}
+
+.vote-steps li::before {
+  content: "Step " counter(vs);
+  display: block;
+  font-weight: 600;
+  color: var(--kelp);
+  margin-bottom: 0.3rem;
+}
+
+.vote-steps h3 {
+  margin-bottom: 0.4rem;
+}
+
+.tick-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.tick-list li {
+  padding-left: 1.8rem;
+  position: relative;
+}
+
+.tick-list li::before {
+  content: "";
+  position: absolute;
+  left: 0.1rem;
+  top: 0.45rem;
+  width: 0.9rem;
+  height: 0.5rem;
+  border-left: 3px solid var(--kelp);
+  border-bottom: 3px solid var(--kelp);
+  transform: rotate(-45deg);
+}
+
+.join {
+  background: var(--signal);
+  padding-block: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.join-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.join h2::after {
+  display: none !important;
+}

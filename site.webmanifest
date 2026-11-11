@@ -1,0 +1,46 @@
+{
+  "id": "./",
+  "name": "St. Francis High School Namagoma",
+  "short_name": "St. Francis",
+  "lang": "en-GB",
+  "description": "A day and boarding high school in Namagoma for students in S.1 to S.6.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#F7F9FA",
+  "theme_color": "#14233A",
+  "categories": [
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "images/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Book a visit",
+      "short_name": "Book a visit",
+      "url": "contact.html"
+    },
+    {
+      "name": "Admissions",
+      "short_name": "Admissions",
+      "url": "admissions.html"
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+/* admissions.css — admissions page only */
+.step-list {
+  list-style: none;
+  padding: 0;
+  counter-reset: step;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.step-list li {
+  counter-increment: step;
+  border-top: 4px solid var(--kelp);
+  padding-top: 1rem;
+}
+
+.step-list li::before {
+  content: "Step " counter(step);
+  display: block;
+  font-weight: 600;
+  color: var(--kelp);
+  margin-bottom: 0.3rem;
+}
+
+.step-list h3 {
+  margin-bottom: 0.4rem;
+}
+
+.estimator {
+  background: var(--white);
+  padding: 1.6rem;
+  border-radius: var(--r);
+  display: grid;
+  gap: 0.6rem;
+}
+
+.estimator input[type=range] {
+  width: 100%;
+  accent-color: var(--kelp);
+}
+
+.estimate {
+  margin-top: 0.8rem;
+  font-size: 1.2rem;
+}
+
+.estimate b {
+  font-family: var(--display);
+  font-size: 2rem;
+  display: block;
+  color: var(--kelp);
+}
+
+.enquiry form {
+  display: grid;
+}
+
+.enquiry input,
+.enquiry select,
+.enquiry textarea {
+  border-color: var(--salt);
+}
+
+.enquiry small {
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* --- longer page sections --- */
+.checklist {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.checklist label {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+  padding: 1rem 1.1rem;
+  background: var(--white);
+  border-radius: var(--r);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.checklist input {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-top: 0.15rem;
+  accent-color: var(--kelp);
+}
+
+.checklist label:has(input:checked) {
+  background: #DDEFE7;
+  text-decoration: line-through;
+  color: var(--slate);
+}
+
+.check-progress {
+  margin-top: 1rem;
+  font-weight: 600;
+  color: var(--kelp);
+}
+
+.settle-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.settle-grid li {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 20px;
+  border-top: 6px solid var(--kelp);
+}
+
+.settle-grid h3 {
+  margin-bottom: 0.4rem;
+}
+
+/* ===== hero: yellow, with the four steps as a path and a rounded photo ===== */
+.page-banner--apply {
+  background: var(--signal);
+  color: var(--ink);
+}
+
+.page-banner--apply p {
+  color: var(--ink);
+}
+
+.hero-path {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  counter-reset: step;
+}
+
+.hero-path li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem 0.4rem 0.45rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--salt);
+  font-weight: 600;
+  font-size: 0.95rem;
+  counter-increment: step;
+}
+
+.hero-path li::before {
+  content: counter(step);
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--signal);
+  color: var(--ink);
+  font-size: 0.8rem;
+}
+
+.page-banner--apply .hero-photo {
+  width: min(320px, 100%);
+  justify-self: center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 6px solid var(--ink);
+  border-radius: 30%;
+  rotate: -4deg;
+  box-shadow: 10px 10px 0 var(--ink);
+}

@@ -1,0 +1,225 @@
+/* academics.css — academics page only */
+.path-panel {
+  background: var(--white);
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+  border-top: 8px solid var(--kelp);
+  max-width: 820px;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.path-panel ul {
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.bars {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 240px) 1fr 3rem;
+  gap: 1rem;
+  align-items: center;
+}
+
+.bar {
+  background: var(--white);
+  height: 18px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--kelp);
+  border-radius: 999px;
+  transition: width 1s ease-out;
+}
+
+@media (max-width: 600px) {
+  .bar-row {
+    grid-template-columns: 1fr 3rem;
+  }
+
+  .bar-row span {
+    grid-column: 1/-1;
+  }
+}
+
+#subject-search {
+  max-width: 420px;
+  margin-block: 1.4rem;
+}
+
+.subject-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+}
+
+.subject-list li {
+  padding: 0.7rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--r);
+}
+
+.subject-list li[hidden] {
+  display: none;
+}
+
+.support-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.support-list li {
+  border-left: 6px solid var(--signal);
+  padding-left: 1rem;
+}
+
+/* --- longer page sections --- */
+.read-steps {
+  list-style: none;
+  padding: 0;
+  counter-reset: rs;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.read-steps li {
+  counter-increment: rs;
+  background: var(--white);
+  padding: 1.4rem;
+  border-radius: 20px;
+}
+
+.read-steps li::before {
+  content: "Stage " counter(rs);
+  display: block;
+  font-weight: 600;
+  color: var(--kelp);
+  margin-bottom: 0.3rem;
+}
+
+.read-steps h3 {
+  margin-bottom: 0.4rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  margin-top: 1.6rem;
+  border-radius: var(--r);
+  background: var(--white);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 520px;
+}
+
+th,
+td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--mist);
+}
+
+thead th {
+  background: var(--ink);
+  color: var(--salt);
+}
+
+tbody th {
+  font-weight: 600;
+}
+
+.assess-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  margin-top: 1.25rem;
+}
+
+.assess-grid li {
+  border-top: 4px solid var(--ink);
+  padding-top: 1rem;
+}
+
+.assess-grid h3 {
+  margin-bottom: 0.4rem;
+}
+
+/* ===== hero: a green exercise-book page with the photo taped on ===== */
+.page-banner--learn {
+  --bp: clamp(2rem, 5vw, 3.5rem);
+  background-color: var(--kelp);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2.05rem,
+    rgba(255, 255, 255, 0.16) 2.05rem,
+    rgba(255, 255, 255, 0.16) calc(2.05rem + 2px)
+  );
+  color: var(--salt);
+}
+
+/* the red-pen margin line, always just left of the text */
+.page-banner--learn .wrap::before {
+  content: "";
+  position: absolute;
+    top: calc((var(--nav-space) + 1rem) * -1);
+  bottom: calc(var(--bp) * -1);
+  left: -1rem;
+  width: 2px;
+  background: var(--signal);
+  opacity: 0.75;
+}
+
+.page-banner--learn p {
+  color: #E3F0EA;
+}
+
+.page-banner--learn .hero-photo {
+  position: relative;
+  padding: 0.6rem 0.6rem 1.7rem;
+  background: var(--white);
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.25);
+  rotate: 3deg;
+}
+
+.page-banner--learn .hero-photo img {
+  aspect-ratio: 4 / 3;
+  height: auto;
+}
+
+/* strip of tape */
+.page-banner--learn .hero-photo::before {
+  content: "";
+  position: absolute;
+  top: -0.8rem;
+  left: 50%;
+  width: 5rem;
+  height: 1.6rem;
+  background: var(--signal);
+  opacity: 0.85;
+  transform: translateX(-50%) rotate(-5deg);
+}

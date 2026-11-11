@@ -1,0 +1,6 @@
+# Welcome, search engines. Everything public is open to crawl.
+User-agent: *
+Allow: /
+Disallow: /tools/
+
+Sitemap: https://www.example.com/sitemap.xml
