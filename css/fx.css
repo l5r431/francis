@@ -148,3 +148,20 @@ html.has-clock body:has(.subnav) section[id] { scroll-margin-top: calc(var(--nav
   .bg-fx i { animation: none !important; }
   .straw { display: none; }
 }
+/* no tap flash on touch devices */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a, button, summary, select, label, [role="button"] {
+  touch-action: manipulation;   /* removes the 300ms tap delay and double-tap zoom on buttons and links */
+  -webkit-touch-callout: none;  /* iPhone: no pop-up menu when you press and hold a link or image */
+}
+
+/* some browsers keep an outline on the item you just tapped; hide it for taps only */
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+summary:focus:not(:focus-visible),
+select:focus:not(:focus-visible) {
+  outline: none;
+}

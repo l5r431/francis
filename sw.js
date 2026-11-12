@@ -3,7 +3,7 @@
 
    !! EVERY TIME YOU PUBLISH CHANGES, add 1 to VERSION below. That throws away the saved copies on visitors' phones
    so they get your new pictures and frames. (Pages, CSS and scripts also refresh by themselves when there is signal.) */
-const VERSION = 'stfrancis-v7';
+const VERSION = 'stfrancis-v8';
 
 const SHELL = VERSION + '-shell';     // the pages and code, saved when the app is first opened
 const RUNTIME = VERSION + '-media';   // pictures and frames, saved the first time each one is seen
