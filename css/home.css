@@ -274,27 +274,42 @@
   position: static;
 }
 
-/* ---- intro: words light up as you scroll ---- */
-.intro {
-  background: var(--salt);
-  padding-block: clamp(1.75rem, 4vw, 3rem);
+/* ---- mission and vision: two cards with the straw running down the gap between them ---- */
+.purpose {
+  padding-block: clamp(2rem, 5vw, 3.5rem);
 }
 
-.intro-text {
-  font-family: var(--display);
-  font-size: clamp(1.5rem, 3vw, 2.4rem);
-  line-height: 1.25;
-  max-width: 40ch;
-  margin-inline: 0;
+.purpose-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: clamp(5rem, 10vw, 8rem); /* the straw runs through this gap */
+  row-gap: 1.5rem;
 }
 
-.js .intro-text span {
-  opacity: 0.16;
-  transition: opacity 0.3s ease;
+.purpose-card {
+  padding: clamp(1.1rem, 2.5vw, 1.8rem);
+  border: 2px solid var(--ink);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 4px 4px 0 var(--signal);
 }
 
-.js .intro-text span.on {
-  opacity: 1;
+.purpose-card h2 {
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  margin-bottom: 0.6rem;
+}
+
+.purpose-card p {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.55;
+  max-width: none;
+}
+
+/* small screens: the cards wrap into one column (the straw then passes behind/over their middle) */
+@media (max-width: 760px) {
+  .purpose-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---- stages ---- */

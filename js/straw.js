@@ -29,13 +29,34 @@
     W = document.documentElement.clientWidth;
     H = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
     var cx = W / 2, amp = Math.min(W * 0.26, 170), x = cx, y = 0, i = 0;
+    // the Mission / Vision section: the straw must be dead centre and straight all the way through it
+    var zone = document.getElementById('purpose'), zt = 1e9, zb = 1e9, zoneDone = true;
+    if (zone) {
+      var zr = zone.getBoundingClientRect();
+      zt = zr.top + window.scrollY; zb = zr.bottom + window.scrollY; zoneDone = false;
+    }
     var path = 'M' + x + ' 0';
     while (y < H - 40) {
+      if (!zoneDone && y + 80 >= zt - 420) {
+        // ease to the centre (if needed), then run flat through the section
+        var room = zt - 20 - y;
+        if (x !== cx) {
+          var bl = Math.max(60, Math.min(360, room));
+          path += ' C' + x + ' ' + (y + bl * 0.55) + ' ' + cx + ' ' + (y + bl * 0.45) + ' ' + cx + ' ' + (y + bl);
+          x = cx; y += bl;
+        }
+        y = Math.max(y, zb + 30);
+        path += ' L' + x + ' ' + y;
+        zoneDone = true;
+        continue;
+      }
       var s = PATTERN[i % PATTERN.length]; i++;
       if (s[0] === 'F') {
+        if (!zoneDone) s = ['F', Math.min(s[1], Math.max(40, zt - 420 - y))];
         y += s[1];
         path += ' L' + x + ' ' + y;
       } else {
+        if (!zoneDone && y + s[2] > zt - 400) continue;
         var nx = cx + s[1] * amp, len = s[2];
         path += ' C' + x + ' ' + (y + len * 0.55) + ' ' + nx + ' ' + (y + len * 0.45) + ' ' + nx + ' ' + (y + len);
         x = nx; y += len;

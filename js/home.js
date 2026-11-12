@@ -1,6 +1,5 @@
 /* home.js — homepage only
    1. reveal-on-scroll   2. side dots   3. parallax layers
-   4. words light up in the intro
    6. stage selector, count-up numbers, voices carousel                          */
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -39,23 +38,6 @@ function parallax(vh) {
   });
 }
 const heroText = document.getElementById('hero-text');
-
-/* ---------- 4. Intro words ---------- */
-const introP = document.getElementById('intro-text');
-const words = introP.textContent.trim().split(/\s+/);
-introP.textContent = '';
-const wordEls = words.map((w) => {
-  const s = document.createElement('span');
-  s.textContent = w + ' ';
-  introP.appendChild(s);
-  return s;
-});
-function updateIntro(vh) {
-  const r = introP.getBoundingClientRect();
-  const p = reduce ? 1 : clamp((vh * 0.85 - r.top) / (vh * 0.55), 0, 1);
-  const lit = Math.round(p * wordEls.length);
-  wordEls.forEach((s, i) => s.classList.toggle('on', i < lit));
-}
 
 /* ---------- 5b. Hero: scroll-scrubbed frame sequence ----------
    frames/manifest.js (made by tools/extract_frames.py) says how many frames there are.
@@ -208,7 +190,6 @@ function update() {
     heroVeil.style.opacity = String(1 - fade); // the wash behind the text fades too, so the video is vivid
     heroCue.style.opacity = String(1 - clamp(heroProgress / 0.06, 0, 1));
   }
-  updateIntro(vh);
   ticking = false;
 }
 function requestUpdate() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
