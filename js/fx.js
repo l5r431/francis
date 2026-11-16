@@ -2,7 +2,8 @@
    1. Lite mode for slow connections / low-memory phones
    2. Lined + smoky background layer
    3. Date and time card with a greeting for each time of day (uses the visitor's own clock)
-   4. Lazy loading for every image, including ones added later by scripts */
+   4. Lazy loading for every image, including ones added later by scripts
+   5. The background holds still while the page is being scrolled (less work for the browser) */
 (function () {
   var root = document.documentElement;
 
@@ -20,6 +21,14 @@
   bg.setAttribute('aria-hidden', 'true');
   bg.innerHTML = '<i class="bg-lines"></i><i class="bg-smoke"></i><i class="bg-smoke"></i>';
   document.body.insertBefore(bg, document.body.firstChild);
+
+  // 5. while the page is scrolling the background stops drifting (css/fx.css: html.is-scrolling); it moves again 160ms after you stop
+  var scrolling = false, scrollTimer = 0;
+  window.addEventListener('scroll', function () {
+    if (!scrolling) { scrolling = true; root.classList.add('is-scrolling'); }
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function () { scrolling = false; root.classList.remove('is-scrolling'); }, 160);
+  }, { passive: true });
 
   // 3. clock card
   var KEY = 'stfrancis-clock-closed';

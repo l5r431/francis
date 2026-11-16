@@ -23,18 +23,23 @@ sections.forEach((s) => {
 const dotLinks = [...dotsWrap.children];
 
 /* ---------- 3. Parallax ---------- */
-const parallaxEls = [...document.querySelectorAll('[data-speed]')];
-function parallax(vh) {
-  parallaxEls.forEach((el) => {
-    const sec = el.closest('section');
-    const r = sec.getBoundingClientRect();
-    if (r.bottom < -200 || r.top > vh + 200) return; // off screen, skip
+/* Each parallax layer remembers where its section sits on the page (measure() fills this in), so scrolling never has to
+   ask the browser to measure anything. A layer is only touched when its position really changed. */
+const parallaxEls = [...document.querySelectorAll('[data-speed]')].map((el) => {
+  const sec = el.closest('section');
+  return { el, sec, hero: sec.id === 'welcome', speed: Number(el.dataset.speed), top: 0, height: 0, last: NaN };
+});
+function parallax(vh, y) {
+  parallaxEls.forEach((p) => {
+    if (p.hero && heroSection.classList.contains('has-frames')) return; // the drawn scene is hidden behind the video frames
+    const top = p.top - y;                                              // where the section's top edge is on screen now
+    if (top + p.height < -200 || top > vh + 200) return;                // off screen, skip
     // the hero is tall and pinned, so its layers follow hero progress instead
-    const speed = Number(el.dataset.speed);
-    const shift = sec.id === 'welcome'
-      ? heroProgress * vh * 1.2 * speed
-      : (vh / 2 - (r.top + r.height / 2)) * speed;
-    el.style.transform = 'translateY(' + shift.toFixed(1) + 'px)';
+    const shift = p.hero
+      ? heroProgress * vh * 1.2 * p.speed
+      : (vh / 2 - (top + p.height / 2)) * p.speed;
+    const rounded = Math.round(shift * 10) / 10;
+    if (rounded !== p.last) { p.last = rounded; p.el.style.transform = 'translateY(' + rounded + 'px)'; }
   });
 }
 const heroText = document.getElementById('hero-text');
@@ -129,6 +134,7 @@ function setFrameProgress(p) {
   frameTarget = p * (activeSet.cfg.count - 1);
   if (!frameLooping) { frameLooping = true; requestAnimationFrame(frameLoop); }
 }
+const whenIdle = (fn) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
 function loadSet(set) {
   if (set.started) return;
   set.started = true;
@@ -137,17 +143,22 @@ function loadSet(set) {
     set.frames[0] = first;
     heroSection.classList.add('has-frames');
     if (set === activeSet) { frameDrawn = -1; renderFrame(); }
+    // The first frame is enough to show the hero. The rest are fetched a few at a time AFTER the page has loaded and the
+    // browser is idle, so they never compete with the text, the fonts and the first paint.
     let next = 1;
-    const pump = () => { // load the rest a few at a time
+    const pump = () => {
       if (next >= set.cfg.count) return;
       const i = next++;
       const img = new Image();
+      img.decoding = 'async';
       img.onload = () => { if (set === activeSet && Math.abs(i - frameCurrent) < 3) { frameDrawn = -1; renderFrame(); } pump(); };
       img.onerror = pump;
       set.frames[i] = img;
       img.src = frameUrl(set, i);
     };
-    for (let n = 0; n < 6; n++) pump();
+    const startRest = () => whenIdle(() => { for (let n = 0; n < 4; n++) pump(); });
+    if (document.readyState === 'complete') startRest();
+    else window.addEventListener('load', startRest, { once: true });
   };
   first.src = frameUrl(set, 0);
 }
@@ -166,35 +177,66 @@ window.addEventListener('resize', () => {
   else if (activeSet) sizeCanvas();
 });
 
+/* ---------- measuring (only when the page changes size) ----------
+   Asking the browser "where is this?" while scrolling forces it to redo the page layout again and again, which is what
+   makes scrolling stutter. So we measure once here, keep the numbers, and the scroll handler below only does arithmetic. */
+let heroTop = 0, heroSpan = 0, stickT = 0, secTops = [];
+function measure() {
+  const y = window.scrollY;
+  const hr = heroSection.getBoundingClientRect();
+  heroTop = hr.top + y;
+  heroSpan = hr.height - heroSticky.offsetHeight;
+  stickT = stickTop(heroSticky);
+  secTops = sections.map((s) => s.getBoundingClientRect().top + y);
+  parallaxEls.forEach((p) => { const r = p.sec.getBoundingClientRect(); p.top = r.top + y; p.height = r.height; });
+  requestUpdate();
+}
+let measureQueued = false;
+function requestMeasure() {
+  if (measureQueued) return;
+  measureQueued = true;
+  requestAnimationFrame(() => { measureQueued = false; measure(); });
+}
+
 /* ---------- one scroll handler, throttled with requestAnimationFrame ---------- */
 let ticking = false;
+let lastCurrent = -1, lastFade = -1, lastCue = -1;
 function update() {
   const vh = window.innerHeight;
   const y = window.scrollY;
-  const hr = heroSection.getBoundingClientRect();
-  const heroSpan = hr.height - heroSticky.offsetHeight;
-  heroProgress = heroSpan > 0 ? clamp((stickTop(heroSticky) - hr.top) / heroSpan, 0, 1) : 0;
+  heroProgress = heroSpan > 0 ? clamp((stickT + y - heroTop) / heroSpan, 0, 1) : 0;
   setFrameProgress(heroProgress);
 
   let current = 0;
-  sections.forEach((s, i) => { if (s.getBoundingClientRect().top <= vh * 0.4) current = i; });
-  dotLinks.forEach((d, i) => d.classList.toggle('active', i === current));
+  for (let i = 0; i < secTops.length; i++) { if (secTops[i] - y <= vh * 0.4) current = i; }
+  if (current !== lastCurrent) {
+    lastCurrent = current;
+    dotLinks.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
 
   if (!reduce) {
-    parallax(vh);
+    parallax(vh, y);
     // headline stays while the video starts, then fades as the story plays on
     const fade = clamp((heroProgress - 0.25) / 0.2, 0, 1);
-    heroText.style.opacity = String(1 - fade);
-    heroText.style.transform = 'translateY(' + (-fade * 40).toFixed(1) + 'px)';
-    heroText.style.pointerEvents = fade > 0.9 ? 'none' : '';
-    heroVeil.style.opacity = String(1 - fade); // the wash behind the text fades too, so the video is vivid
-    heroCue.style.opacity = String(1 - clamp(heroProgress / 0.06, 0, 1));
+    if (fade !== lastFade) {
+      lastFade = fade;
+      heroText.style.opacity = String(1 - fade);
+      heroText.style.transform = 'translateY(' + (-fade * 40).toFixed(1) + 'px)';
+      heroText.style.pointerEvents = fade > 0.9 ? 'none' : '';
+      heroVeil.style.opacity = String(1 - fade); // the wash behind the text fades too, so the video is vivid
+    }
+    const cue = 1 - clamp(heroProgress / 0.06, 0, 1);
+    if (cue !== lastCue) { lastCue = cue; heroCue.style.opacity = String(cue); }
   }
   ticking = false;
 }
 function requestUpdate() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
 window.addEventListener('scroll', requestUpdate, { passive: true });
-window.addEventListener('resize', requestUpdate);
+window.addEventListener('resize', requestMeasure);
+window.addEventListener('load', requestMeasure);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(requestMeasure);
+if ('ResizeObserver' in window) new ResizeObserver(requestMeasure).observe(document.body); // the page grew or shrank
+measure();
 update();
 
 /* ---------- 6a. Stage selector ---------- */
@@ -244,10 +286,10 @@ if (reduce || !('IntersectionObserver' in window)) {
 
 /* ---------- 6c. Voices carousel ---------- */
 const voices = [
-  { text: 'The library is my favourite place. I found my love for history there, and my teacher helped me turn it into a plan.', name: 'Student name', who: 'S.5 student', photo: 'img/voices/voice-1.png' },
-  { text: 'In the computer lab I wrote my first program. Now I help run the coding club.', name: 'Student name', who: 'S.3 student', photo: 'img/voices/voice-2.png' },
-  { text: 'My son is a boarder. The matron sends us a message every week, and we always know how he is doing.', name: 'Parent name', who: 'Parent of an S.2 boarder', photo: 'img/voices/voice-3.png' },
-  { text: 'Prom night was the best memory of my school life. We planned everything ourselves, with our teachers behind us.', name: 'Name', who: 'Former S.6 student', photo: 'img/voices/voice-4.png' }
+  { text: 'The library is my favourite place. I found my love for history there, and my teacher helped me turn it into a plan.', name: 'Student name', who: 'S.5 student', photo: 'img/voices/voice-1.webp' },
+  { text: 'In the computer lab I wrote my first program. Now I help run the coding club.', name: 'Student name', who: 'S.3 student', photo: 'img/voices/voice-2.webp' },
+  { text: 'My son is a boarder. The matron sends us a message every week, and we always know how he is doing.', name: 'Parent name', who: 'Parent of an S.2 boarder', photo: 'img/voices/voice-3.webp' },
+  { text: 'Prom night was the best memory of my school life. We planned everything ourselves, with our teachers behind us.', name: 'Name', who: 'Former S.6 student', photo: 'img/voices/voice-4.webp' }
 ];
 let vi = 0;
 function showVoice() {

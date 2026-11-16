@@ -13,7 +13,7 @@
     <meta name="theme-color" content="#14233A">
     <meta name="application-name" content="St. Francis High School">
     <meta name="apple-mobile-web-app-title" content="St. Francis High School">
-    <link type="image/png" href="images/download.ico" rel="icon" sizes="96x96">
+    <link type="image/x-icon" href="images/download.ico" rel="icon" sizes="any">
     <link type="image/svg+xml" href="images/favicon.svg" rel="icon">
     <link href="images/download.ico" rel="shortcut icon">
     <link href="images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
@@ -54,7 +54,7 @@
             "@id": "https://www.example.com/#school",
             "name": "St. Francis High School Namagoma",
             "url": "https://www.example.com/",
-            "logo": "https://www.example.com/icon-512.png",
+            "logo": "https://www.example.com/images/icon-512.png",
             "image": "https://www.example.com/img/social-share.jpg",
             "description": "A day and boarding high school in Namagoma for students in S.1 to S.6, with a library, computer lab, science labs, clubs and sports.",
             "foundingDate": "2008",
@@ -119,12 +119,19 @@
     </script>
     <script>document.documentElement.classList.add('js')</script>
     <script src="js/theme.js"></script>
+    <link rel="preload" as="image" type="image/webp" href="frames/frame_0001.webp" media="(min-aspect-ratio: 6/5)" fetchpriority="high">
+    <link rel="preload" as="image" type="image/webp" href="frames-mobile/frame_0001.webp" media="(max-aspect-ratio: 6/5)" fetchpriority="high">
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="">
     <link
       href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&amp;family=Young+Serif&amp;family=Syne:wght@700;800&amp;family=Caveat:wght@600&amp;display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     >
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&amp;family=Young+Serif&amp;family=Syne:wght@700;800&amp;family=Caveat:wght@600&amp;display=swap" rel="stylesheet">
+    </noscript>
     <link href="css/base.css" rel="stylesheet">
     <link href="css/home.css" rel="stylesheet">
     <link href="css/people.css" rel="stylesheet">
@@ -137,7 +144,7 @@
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="index.html">
-          <img loading="lazy" decoding="async" src="images/download.jpg" width="50px" alt="school logo" style="border-radius: 10px;">
+          <img loading="lazy" decoding="async" src="images/download.jpg" width="50" height="47" alt="St. Francis High School crest" style="border-radius: 10px; height: auto;">
           <span>St. Francis High School<small>Namagoma</small></span>
         </a>
         <button
@@ -451,10 +458,15 @@
             <button role="tab" aria-selected="false" data-stage="s56">S.5 to S.6</button>
           </div>
           <div id="stage-panel" class="stage-panel" role="tabpanel" aria-live="polite" data-reveal="zoom" data-delay="3">
-            <p id="stage-age" class="stage-age"></p>
-            <h3 id="stage-title"></h3>
-            <p id="stage-text"></p>
-            <ul id="stage-points" class="stage-points"></ul>
+            <p id="stage-age" class="stage-age">Senior 1 · Ages 12 to 14</p>
+            <h3 id="stage-title">S.1: Starting strong</h3>
+            <p id="stage-text">A new school, new friends and a wide range of subjects. We help every student settle in and build good study habits.</p>
+            <ul id="stage-points" class="stage-points">
+              <li>Orientation week and a house to belong to</li>
+              <li>English, Mathematics, sciences and ICT basics</li>
+              <li>Library induction and a reading challenge</li>
+              <li>Day or boarding, with a teacher mentor</li>
+            </ul>
             <a id="stage-link" class="btn btn--dark" href="admissions.html">Admissions for this level</a>
           </div>
         </div>
@@ -554,12 +566,12 @@
         <div class="wrap">
           <h2 data-reveal="up">What does St. Francis mean to you?</h2>
           <div class="voice" aria-live="polite" data-reveal="up" data-delay="1">
-            <img loading="lazy" decoding="async" id="voice-photo" class="voice-photo" src="img/voices/voice-1.jpg" alt="" width="400" height="400">
+            <img loading="lazy" decoding="async" id="voice-photo" class="voice-photo" src="img/voices/voice-1.webp" alt="Photo of Student name, S.5 student" width="400" height="400">
             <div class="voice-body">
               <blockquote>
-                <p id="voice-text"></p>
+                <p id="voice-text">The library is my favourite place. I found my love for history there, and my teacher helped me turn it into a plan.</p>
               </blockquote>
-              <p id="voice-who" class="voice-who"></p>
+              <p id="voice-who" class="voice-who">Student name, S.5 student</p>
             </div>
           </div>
           <div class="voice-controls">

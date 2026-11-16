@@ -54,7 +54,7 @@
             "@id": "https://www.example.com/#school",
             "name": "St. Francis High School Namagoma",
             "url": "https://www.example.com/",
-            "logo": "https://www.example.com/icon-512.png",
+            "logo": "https://www.example.com/images/icon-512.png",
             "image": "https://www.example.com/img/social-share.jpg",
             "description": "A day and boarding high school in Namagoma for students in S.1 to S.6, with a library, computer lab, science labs, clubs and sports.",
             "foundingDate": "2008",
@@ -145,7 +145,12 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&amp;family=Young+Serif&amp;family=Syne:wght@700;800&amp;family=Caveat:wght@600&amp;display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     >
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&amp;family=Young+Serif&amp;family=Syne:wght@700;800&amp;family=Caveat:wght@600&amp;display=swap" rel="stylesheet">
+    </noscript>
     <link href="css/base.css" rel="stylesheet">
     <link href="css/contact.css" rel="stylesheet">
     <link href="css/fx.css" rel="stylesheet">
@@ -157,7 +162,7 @@
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="index.html">
-          <img loading="lazy" decoding="async" src="images/download.jpg" width="50px" alt="school logo" style="border-radius: 10px;">
+          <img loading="lazy" decoding="async" src="images/download.jpg" width="50" height="47" alt="St. Francis High School crest" style="border-radius: 10px; height: auto;">
           <span>St. Francis High School<small>Namagoma</small></span>
         </a>
         <button

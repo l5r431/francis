@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Turn a video into numbered JPG frames for the scroll-scrubbed home page hero.
+"""Turn a video into numbered WebP frames (about 60% smaller than JPG, so the page loads faster) for the scroll-scrubbed home page hero.
 
 Usage:
     python tools/extract_frames.py my-video.mp4 [fps] [width] [--mobile]
@@ -45,22 +45,23 @@ def main():
                  "then check that typing 'ffmpeg -version' works in a terminal.")
 
     FRAMES.mkdir(exist_ok=True)
-    for old in FRAMES.glob("frame_*.jpg"):
+    for old in list(FRAMES.glob("frame_*.jpg")) + list(FRAMES.glob("frame_*.webp")):
         old.unlink()
 
     cmd = ["ffmpeg", "-y", "-i", str(video),
            "-vf", f"fps={fps},scale={width}:-2",
-           "-q:v", "4", str(FRAMES / "frame_%04d.jpg")]
+           "-c:v", "libwebp", "-quality", "72", "-compression_level", "6",
+           str(FRAMES / "frame_%04d.webp")]
     subprocess.run(cmd, check=True)
 
-    files = sorted(FRAMES.glob("frame_*.jpg"))
+    files = sorted(FRAMES.glob("frame_*.webp"))
     count = len(files)
     if count == 0:
         sys.exit("No frames were written. Is this a valid video file?")
 
     (FRAMES / "manifest.js").write_text(
         "/* written by tools/extract_frames.py */\n"
-        f"window.{variable} = {{ count: {count}, path: '{folder}/frame_', digits: 4, ext: 'jpg' }};\n",
+        f"window.{variable} = {{ count: {count}, path: '{folder}/frame_', digits: 4, ext: 'webp' }};\n",
         encoding="utf-8")
 
     mb = sum(f.stat().st_size for f in files) / 1_000_000

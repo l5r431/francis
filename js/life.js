@@ -33,17 +33,24 @@ filter('all');
     day.classList.add('day--pinned');
     dayTrack.removeAttribute('tabindex');
   }
-  const distance = () => Math.max(dayTrack.scrollWidth - window.innerWidth + 40, 0);
+  /* The numbers below are measured here, when the page changes size, and kept. The scroll handler only does arithmetic
+     with them: asking the browser to measure on every scroll tick forces the whole page layout to be redone and makes scrolling stutter. */
+  let dist = 0, dayTop = 0, daySpan = 0, stickT = 0;
   function size() {
-    if (pinned) day.style.height = Math.round(daySticky.offsetHeight + distance() / DAY_SPEED) + 'px';
+    if (!pinned) return;
+    dist = Math.max(dayTrack.scrollWidth - window.innerWidth + 40, 0);
+    const wanted = Math.round(daySticky.offsetHeight + dist / DAY_SPEED) + 'px';
+    if (day.style.height !== wanted) day.style.height = wanted;
+    const box = day.getBoundingClientRect();
+    dayTop = box.top + window.scrollY;
+    daySpan = box.height - daySticky.offsetHeight;
+    stickT = stickTop(daySticky);
   }
   function update() {
     let progress;
     if (pinned) {
-      const box = day.getBoundingClientRect();
-      const span = box.height - daySticky.offsetHeight;
-      progress = span > 0 ? clamp((stickTop(daySticky) - box.top) / span, 0, 1) : 0;
-      dayTrack.style.transform = 'translateX(' + (-progress * distance()).toFixed(1) + 'px)';
+      progress = daySpan > 0 ? clamp((stickT + window.scrollY - dayTop) / daySpan, 0, 1) : 0;
+      dayTrack.style.transform = 'translateX(' + (-progress * dist).toFixed(1) + 'px)';
     } else {
       const furthest = dayTrack.scrollWidth - dayTrack.clientWidth;
       progress = furthest > 0 ? clamp(dayTrack.scrollLeft / furthest, 0, 1) : 1;
@@ -55,12 +62,16 @@ filter('all');
     const gap = parseFloat(getComputedStyle(dayTrack).columnGap) || 0;
     dayTrack.scrollBy({ left: direction * (card.offsetWidth + gap), behavior: reduce ? 'auto' : 'smooth' });
   }
-  dayTrack.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('scroll', update, { passive: true });
+  let tick = false;
+  const requestUpdate = () => { if (!tick) { tick = true; requestAnimationFrame(() => { tick = false; update(); }); } };
+  dayTrack.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('scroll', requestUpdate, { passive: true });
   document.getElementById('day-prev').addEventListener('click', () => slide(-1));
   document.getElementById('day-next').addEventListener('click', () => slide(1));
-  window.addEventListener('resize', () => { size(); update(); });
-  window.addEventListener('load', () => { size(); update(); });
+  const remeasure = () => { size(); requestUpdate(); };
+  window.addEventListener('resize', remeasure);
+  window.addEventListener('load', remeasure);
+  if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);   // the page above it grew or shrank
   size();
   update();
 })();

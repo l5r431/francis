@@ -18,7 +18,7 @@
   --nav-top: 10px;
   --nav-h: 4rem;
   --nav-gap: 10px;
-  --nav-radius: 30px;
+  --nav-radius: 15px;
   --nav-side: .4rem;
   --nav-space: calc(var(--nav-top) + var(--nav-h) + var(--nav-gap));
 

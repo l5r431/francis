@@ -21,9 +21,11 @@ const keyText = {
 };
 const keySelect = document.getElementById('key-year');
 const keyOut = document.getElementById('key-out');
-keySelect.addEventListener('change', () => {
-  keyOut.textContent = keyText[keySelect.value] || 'Pick a level to see who your main adults will be.';
-});
+if (keySelect && keyOut) {   // this picker is not on the page right now; without the check the error stopped the news filter below from working
+  keySelect.addEventListener('change', () => {
+    keyOut.textContent = keyText[keySelect.value] || 'Pick a level to see who your main adults will be.';
+  });
+}
 
 /* ---------- News: category filter + search ---------- */
 const chipButtons = document.querySelectorAll('#news-chips button');

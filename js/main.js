@@ -88,10 +88,12 @@
   const links = [...nav.querySelectorAll('a[href^="#"]')];
   const sections = links.map((a) => document.querySelector(a.getAttribute('href')));
   let activeIndex = -1;
+  let tops = [];
+  function measure() { tops = sections.map((s) => (s ? s.getBoundingClientRect().top + window.scrollY : Infinity)); }
   function spy() {
-    const line = window.innerHeight * 0.35;
+    const line = window.scrollY + window.innerHeight * 0.35;
     let current = -1;
-    sections.forEach((s, i) => { if (s && s.getBoundingClientRect().top <= line) current = i; });
+    tops.forEach((t, i) => { if (t <= line) current = i; });
     if (current === activeIndex) return;
     activeIndex = current;
     links.forEach((a, i) => a.classList.toggle('active', i === current));
@@ -102,7 +104,11 @@
   }
   let ticking = false;
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { spy(); ticking = false; }); } }, { passive: true });
-  spy();
+  const remeasure = () => { measure(); spy(); };
+  window.addEventListener('resize', remeasure);
+  window.addEventListener('load', remeasure);
+  if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);
+  remeasure();
 })();
 
 /* ---------- Form sending (Formspree) ----------
@@ -189,18 +195,23 @@ function showStatus(el, message, kind) {
 
   toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }));
 
-  // update the bar and the back-to-top button as the page scrolls
+  // update the bar and the back-to-top button as the page scrolls.
+  // The page height is measured only when the page changes size (reading it on every scroll tick makes the browser redo the layout).
   let ticking = false;
+  let max = 0;
+  function measure() { max = document.documentElement.scrollHeight - window.innerHeight; }
   function update() {
-    const max = document.documentElement.scrollHeight - window.innerHeight;
     const progress = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
     bar.style.transform = 'scaleX(' + progress.toFixed(4) + ')';
     toTop.classList.toggle('show', window.scrollY > 700);
     ticking = false;
   }
+  function remeasure() { measure(); update(); }
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
-  window.addEventListener('resize', update);
-  update();
+  window.addEventListener('resize', remeasure);
+  window.addEventListener('load', remeasure);
+  if ('ResizeObserver' in window) new ResizeObserver(remeasure).observe(document.body);
+  remeasure();
 })();
 
 /* ---------- Install as an app, and work offline ----------

@@ -20,6 +20,12 @@
       setSpeed();
       window.addEventListener('resize', setSpeed);
     }
+    // a carousel that is off screen stands still (nothing to see, so nothing to draw)
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        entries.forEach((e) => m.classList.toggle('is-offscreen', !e.isIntersecting));
+      }, { rootMargin: '120px 0px' }).observe(m);
+    }
     const btn = m.parentElement.querySelector('.marquee-toggle');
     if (btn) {
       btn.addEventListener('click', () => {

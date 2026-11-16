@@ -268,7 +268,8 @@
 }
 .marquee:hover .marquee-track,
 .marquee:focus-within .marquee-track,
-.marquee.is-paused .marquee-track {
+.marquee.is-paused .marquee-track,
+.marquee.is-offscreen .marquee-track {
   animation-play-state: paused;
 }
 @keyframes marquee-slide {
